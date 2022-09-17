@@ -1,0 +1,42 @@
+plugins {
+    id 'java'
+    id 'idea'
+    id 'org.springframework.boot' version '2.7.3'
+    id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+}
+
+group = 'ru.bmstu.dvasev.rsoi'
+version = '1.0.0-SNAPSHOT'
+sourceCompatibility = '11'
+targetCompatibility = '11'
+
+repositories {
+    mavenCentral()
+}
+
+configurations {
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
+}
+
+ext {
+    lombokVersion = '1.18.24'
+    postgresqlJdbcVersion = '42.5.0'
+}
+
+dependencies {
+    //    Spring
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-web'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
+
+    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+
+    //    JDBC drivers
+    implementation group: 'org.postgresql', name: 'postgresql', version: "${postgresqlJdbcVersion}"
+
+    //    Third party
+    compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+    annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+}
