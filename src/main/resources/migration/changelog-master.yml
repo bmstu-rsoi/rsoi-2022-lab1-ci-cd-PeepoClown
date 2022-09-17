@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: classpath:migration/v1/changelog-v1.yml

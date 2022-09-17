@@ -7,11 +7,11 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
 import java.io.Serializable;
 
-import static javax.persistence.GenerationType.AUTO;
+import static javax.persistence.GenerationType.SEQUENCE;
 
 @Data
 @Accessors(chain = true)
@@ -23,8 +23,9 @@ public class Person
     private static final long serialVersionUID = -167072508838291289L;
 
     @Id
-    @GeneratedValue(strategy = AUTO)
     @Column(name = "id", nullable = false)
+    @GeneratedValue(generator = "person_id_seq", strategy = SEQUENCE)
+    @SequenceGenerator(name = "person_id_seq", sequenceName = "person_id_seq")
     private Integer id;
 
     @Column(name = "name", nullable = false)
