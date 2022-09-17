@@ -35,7 +35,6 @@ import static org.springframework.http.ResponseEntity.status;
 @RequiredArgsConstructor
 @RequestMapping(
         path = "api/v1/persons",
-        consumes = APPLICATION_JSON_VALUE,
         produces = APPLICATION_JSON_VALUE
 )
 public class PersonsController {

@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.lang.NonNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.bmstu.dvasev.rsoi.cicd.storage.person.dao.PersonRepository;
 import ru.bmstu.dvasev.rsoi.cicd.storage.person.entity.Person;
 import ru.bmstu.dvasev.rsoi.cicd.storage.person.model.PersonModel;
@@ -23,6 +24,7 @@ public class PersonService {
 
     private final PersonRepository personRepository;
 
+    @Transactional(readOnly = true)
     public List<PersonModel> getAll() {
         var persons = personRepository.findAll()
                 .stream()
@@ -33,12 +35,14 @@ public class PersonService {
     }
 
     @NonNull
+    @Transactional
     public Integer create(@NonNull PersonModel person) {
         var createdPerson = toModel(personRepository.save(toEntity(person)));
         log.debug("Successfully created person: {}", createdPerson);
         return createdPerson.getId();
     }
 
+    @Transactional(readOnly = true)
     public Optional<PersonModel> findById(@NonNull Integer personId) {
         return findEntityById(personId)
                 .map(this::toModel)
@@ -48,11 +52,13 @@ public class PersonService {
                 }).orElse(empty());
     }
 
+    @Transactional
     public void deleteById(@NonNull Integer personId) {
-        personRepository.deleteById(personId);
+        findEntityById(personId).ifPresent(personRepository::delete);
         log.debug("Successfully delete person by id '{}", personId);
     }
 
+    @Transactional
     public Optional<PersonModel> updateById(@NonNull Integer personId, @NonNull PersonModel person) {
         return findEntityById(personId)
                 .map(foundPerson -> {

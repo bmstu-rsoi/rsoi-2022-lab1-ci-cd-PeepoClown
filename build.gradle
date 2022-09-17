@@ -3,6 +3,7 @@ plugins {
     id 'idea'
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
+    id 'org.liquibase.gradle' version '2.1.1'
 }
 
 group = 'ru.bmstu.dvasev.rsoi'
@@ -14,6 +15,13 @@ repositories {
     mavenCentral()
 }
 
+idea {
+    module {
+        downloadJavadoc = true
+        downloadSources = true
+    }
+}
+
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
@@ -21,8 +29,9 @@ configurations {
 }
 
 ext {
-    lombokVersion = '1.18.24'
     postgresqlJdbcVersion = '42.5.0'
+    liquibaseVersion = '4.16.1'
+    lombokVersion = '1.18.24'
 }
 
 dependencies {
@@ -31,10 +40,14 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa'
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
+    //    Test
     testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
 
-    //    JDBC drivers
+    //    DB
     implementation group: 'org.postgresql', name: 'postgresql', version: "${postgresqlJdbcVersion}"
+    implementation group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
+    liquibaseRuntime group: 'org.postgresql', name: 'postgresql', version: "${postgresqlJdbcVersion}"
+    liquibaseRuntime group: 'org.liquibase', name: 'liquibase-core', version: "${liquibaseVersion}"
 
     //    Third party
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
