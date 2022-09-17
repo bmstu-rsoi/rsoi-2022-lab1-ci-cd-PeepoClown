@@ -1,18 +1,20 @@
-version: "3"
+version: "3.9"
+
 services:
   postgres:
     image: library/postgres:13
     container_name: postgres
-    restart: on-failure
+    pull_policy: if_not_present
+    restart: always
+    ports:
+      - "5432:5432"
     environment:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: "postgres"
       POSTGRES_DB: postgres
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - pg-data:/var/lib/postgresql/data
       - ./postgres/:/docker-entrypoint-initdb.d/
-    ports:
-      - "5432:5432"
 
 volumes:
-  db-data:
+  pg-data:
