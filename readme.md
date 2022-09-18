@@ -1,5 +1,5 @@
 [![codecov](https://codecov.io/gh/bmstu-rsoi/rsoi-2022-lab1-ci-cd-PeepoClown/branch/develop/graph/badge.svg)](https://app.codecov.io/gh/bmstu-rsoi/rsoi-2022-lab1-ci-cd-PeepoClown/tree/develop)
-![GitHub Classroom Workflow](../../workflows/GitHub%20Classroom%20Workflow/badge.svg?branch=master)
+![GitHub Classroom Workflow](../../workflows/GitHub%20Classroom%20Workflow/badge.svg?branch=develop)
 
 ### Васев Дмитрий Андреевич ИУ7-11М
 
