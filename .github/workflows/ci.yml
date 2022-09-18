@@ -17,27 +17,26 @@ jobs:
           fetch-depth: 0
 
       - name: Set up JDK 11 for x64
-        uses: actions/setup-java@v3
+        uses: actions/setup-java@v1
         with:
           java-version: '11'
 
-      - name: Gradle build (and unit testing)
+      - name: Setup gradle
         uses: gradle/gradle-build-action@v2
-        with:
-          arguments: clean build
+
+      - name: Gradle build (and unit testing)
+        run: ./gradlew clean build
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
       - name: Build, Push and Deploy to Heroku
-        id: heroku
-        uses: jctaveras/heroku-deploy@v1.0.0
+        uses: akhileshns/heroku-deploy@v3.12.12
         with:
-          email: mergeconflictsveteran@gmail.com
-          api_key: 64971a84-77eb-482c-8214-cc0909a45b0d
-          app_name: rsoi-22-lab1-ci-cd-peepoclown
-          dockerfile_path: '.'
-          process_type: 'web'
+          heroku_api_key: 64971a84-77eb-482c-8214-cc0909a45b0d
+          heroku_app_name: rsoi-22-lab1-ci-cd-peepoclown
+          heroku_email: "mergeconflictsveteran@gmail.com"
+          usedocker: true
 
 #      - name: Run API Tests
 #        id: run-newman
