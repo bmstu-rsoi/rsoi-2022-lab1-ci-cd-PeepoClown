@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'idea'
+    id 'jacoco'
     id 'org.springframework.boot' version '2.7.3'
     id 'io.spring.dependency-management' version '1.0.13.RELEASE'
     id 'org.liquibase.gradle' version '2.1.1'
@@ -22,16 +23,45 @@ idea {
     }
 }
 
+// Annotation processor configuration
 configurations {
     compileOnly {
         extendsFrom annotationProcessor
     }
 }
 
+// Code coverage configuration
+jacoco {
+    toolVersion = "0.8.8"
+    reportsDirectory = layout.buildDirectory.dir("$buildDir/reports/jacoco") as Directory
+}
+
+jacocoTestReport {
+    dependsOn test
+
+    reports {
+        xml.required = false
+        csv.required = false
+        html.outputLocation = layout.buildDirectory.dir('html')
+    }
+
+    afterEvaluate {
+        classDirectories.setFrom(files(classDirectories.files.collect {
+            fileTree(dir: it, exclude: [
+                    "**/model/*",
+                    "**/entity/*",
+                    "**/Application.java",
+            ])
+        }))
+    }
+}
+
+
 ext {
     postgresqlJdbcVersion = '42.5.0'
     liquibaseVersion = '4.16.1'
     lombokVersion = '1.18.24'
+    h2Version = '2.1.214'
 }
 
 dependencies {
@@ -41,7 +71,10 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-validation'
 
     //    Test
-    testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test'
+    testImplementation (group: 'org.springframework.boot', name: 'spring-boot-starter-test') {
+        exclude group: 'junit', module: 'junit'
+    }
+    testImplementation group: 'com.h2database', name: 'h2', version: "${h2Version}"
 
     //    DB
     implementation group: 'org.postgresql', name: 'postgresql', version: "${postgresqlJdbcVersion}"
@@ -52,4 +85,10 @@ dependencies {
     //    Third party
     compileOnly group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: "${lombokVersion}"
+}
+
+// Junit configuration
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
 }

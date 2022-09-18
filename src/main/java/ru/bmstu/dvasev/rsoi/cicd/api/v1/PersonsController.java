@@ -19,10 +19,12 @@ import ru.bmstu.dvasev.rsoi.cicd.storage.person.PersonService;
 import ru.bmstu.dvasev.rsoi.cicd.storage.person.model.PersonModel;
 
 import javax.validation.Valid;
+import java.net.URI;
 import java.util.List;
 
 import static java.lang.Integer.parseInt;
 import static java.lang.String.format;
+import static java.util.Objects.requireNonNull;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.NO_CONTENT;
 import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
@@ -57,8 +59,8 @@ public class PersonsController {
         var location = ServletUriComponentsBuilder.fromCurrentRequest()
                 .path("/{id}")
                 .buildAndExpand(response)
-                .toUri();
-        return created(location).build();
+                .getPath();
+        return created(URI.create(requireNonNull(location))).build();
     }
 
     @GetMapping("{id}")

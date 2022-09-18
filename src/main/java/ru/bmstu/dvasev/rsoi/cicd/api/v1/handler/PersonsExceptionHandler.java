@@ -25,8 +25,8 @@ public class PersonsExceptionHandler {
         return status(BAD_REQUEST).body(errorResponse);
     }
 
-    @ExceptionHandler(NumberFormatException.class)
-    public ResponseEntity<ErrorResponse> handleValidationException(NumberFormatException e, WebRequest request) {
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorResponse> handleValidationException(IllegalArgumentException e, WebRequest request) {
         log.error("Validation error: '{}'", e.getMessage(), e);
         var errorResponse = new ErrorResponse()
                 .setMessage(BAD_REQUEST.getReasonPhrase())

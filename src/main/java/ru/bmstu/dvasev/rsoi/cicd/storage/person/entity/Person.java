@@ -24,8 +24,8 @@ public class Person
 
     @Id
     @Column(name = "id", nullable = false)
-    @GeneratedValue(generator = "person_id_seq", strategy = SEQUENCE)
-    @SequenceGenerator(name = "person_id_seq", sequenceName = "person_id_seq")
+    @GeneratedValue(generator = "t_person_id_seq", strategy = SEQUENCE)
+    @SequenceGenerator(name = "t_person_id_seq", sequenceName = "t_person_id_seq", allocationSize = 1)
     private Integer id;
 
     @Column(name = "name", nullable = false)

@@ -10,10 +10,3 @@ CREATE TABLE IF NOT EXISTS public.t_person
     work varchar(255)
 );
 --rollback DROP TABLE IF EXISTS public.t_person;
-
---changeset admin:2
-CREATE SEQUENCE IF NOT EXISTS public.person_id_seq
-    INCREMENT 50
-    START 1
-    MINVALUE 1;
---rollback DROP SEQUENCE IF EXISTS public.person_id_seq;
