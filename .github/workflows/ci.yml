@@ -1,8 +1,12 @@
+#  pull_request:
+#    branches:
+#      - master
 name: Build
 on:
-  pull_request:
+  push:
     branches:
-      - master
+      - develop
+
 jobs:
   build:
     name: Build
@@ -12,16 +16,34 @@ jobs:
         with:
           fetch-depth: 0
 
-      # TODO build, test and deploy project
+      - name: Set up JDK 11 for x64
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+
+      - name: Gradle build (and unit testing)
+        uses: gradle/gradle-build-action@v2
+        with:
+          arguments: clean build
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v3
 
-      - name: Run API Tests
-        id: run-newman
-        uses: anthonyvscode/newman-action@v1
+      - name: Build, Push and Deploy to Heroku
+        id: heroku
+        uses: jctaveras/heroku-deploy@v1.0.0
         with:
-          collection: postman/[inst] Lab1.postman_collection.json
-          environment: postman/[inst][heroku] Lab1.postman_environment.json
-          delayRequest: 50
-          reporters: cli
+          email: mergeconflictsveteran@gmail.com
+          api_key: 64971a84-77eb-482c-8214-cc0909a45b0d
+          app_name: rsoi-22-lab1-ci-cd-peepoclown
+          dockerfile_path: '.'
+          process_type: 'web'
+
+#      - name: Run API Tests
+#        id: run-newman
+#        uses: anthonyvscode/newman-action@v1
+#        with:
+#          collection: postman/[inst] Lab1.postman_collection.json
+#          environment: postman/[inst][heroku] Lab1.postman_environment.json
+#          delayRequest: 50
+#          reporters: cli
